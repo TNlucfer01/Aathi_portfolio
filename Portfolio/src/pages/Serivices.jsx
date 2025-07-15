@@ -1,10 +1,18 @@
-function Skill({skillName,SkillLevel,skillexperiance}) {
+function Skill({skillName,skillLevel,skillExperience}) {
     return(<>
+    <div >
+      <span >{skillName}</span>
+      <div>
+        <p>Level: {skillLevel}</p>
+        <p>Experience: {skillExperience} years</p>
+      </div>
+    </div>
+    
     </>)
 }
 
 function Skills() {
-  const Skill = [
+  const skills = [
     {
       name: "skill1",
       level:"level1",
@@ -26,7 +34,18 @@ function Skills() {
       experiance:"2"
     }
   ];
-  return <p></p>;
+  return (
+    <>  <div >
+      {skills.map((skill, index) => (
+        <Skill
+          key={index}
+          skillName={skill.name}
+          skillLevel={skill.level}
+          skillExperience={skill.experience}
+        />
+      ))}
+    </div></>
+  );
 }
 
 export default Skills;

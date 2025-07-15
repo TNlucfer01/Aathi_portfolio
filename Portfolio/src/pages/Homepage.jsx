@@ -1,22 +1,27 @@
-import Navbar from "../Componets/Navbar";
 import Footer from "../Componets/Footer";
-import IndexRouter from "../Componets/Routers";
- 
-function HomePage(){
-    return (
-        <div>
-            <header>
-                <Navbar/>
-            </header>
-            <main>
-                
-            </main>
-            {/* <Footer/> */}
-        </div>
-    )
+import Navbar from "../Componets/Navbar";
+import About from "../pages/About";
+import Projects from "../pages/Project";
+import Skills from "../pages/Serivices";
+function HomePage() {
+  return (
+    <div>
+      <header>
+        {/* //change the navbar  */}
+        <Navbar />
+      </header>
+      <main>
+        {/* update this  */}
+        <About />
+        {/* finish the old projects  */}
+        <Projects />
+        {/* know the skill you know  */}
+        <Skills />
+      </main>
+      {/* //include a form for contacting   */}
+      <Footer />
+    </div>
+  );
 }
-
-
-
 
 export default HomePage;

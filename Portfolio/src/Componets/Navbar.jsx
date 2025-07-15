@@ -1,8 +1,7 @@
-import { NavLink } from "react-router-dom";
 
 function Navitem({to,children}){
 return (
-        <NavLink to={to} className="p-1" >{children}</NavLink>
+        <a href={to} className="p-1" >{children}</a>
 );
 }
 function Navbar(){
