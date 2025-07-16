@@ -3,7 +3,7 @@ import HomePage from "../pages/Homepage";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Projects from "../pages/Project";
 import Footer from "./Footer";
-import Skills from "../pages/Serivices";
+import Skills from "../pages/Skill";
 function IndexRouter() {
   const location = useLocation();
   return (

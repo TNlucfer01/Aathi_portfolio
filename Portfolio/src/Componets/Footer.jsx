@@ -10,7 +10,7 @@ import {
 
 const Footer = () => {
   return (
-    <div>
+    <div className="sticky top-2 p-1 justify-center space-x-6 ">
       <p>© {new Date().getFullYear()} Aathi. All rights reserved.</p>
       <Contact />
     </div>
@@ -28,7 +28,7 @@ const icons = [
     { icon: <FaPhone />, href: "tel:+919944711288", style: { backgroundColor: "#34a853", color: "#fff", borderRadius: "50%", padding: "6px" } },
 ];
   return (
-    <div className="flex p-0.5 content-center">
+    <div id="footer" className="flex p-0.5 justify-center space-x-6">
       {icons.map((item, idx) => (
         <a
           key={idx}

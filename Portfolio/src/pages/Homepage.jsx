@@ -2,20 +2,19 @@ import Footer from "../Componets/Footer";
 import Navbar from "../Componets/Navbar";
 import About from "../pages/About";
 import Projects from "../pages/Project";
-import Skills from "../pages/Serivices";
+import Skills from "./Skill";
 function HomePage() {
   return (
-    <div>
+    <div className={"font-jetbrain"} id="home">
       <header>
-        {/* //change the navbar  */}
-        <Navbar />
+        <Navbar  />
       </header>
       <main>
-        {/* update this  */}
+        {/*update this*/}
         <About />
-        {/* finish the old projects  */}
+        {/*finish the old projects*/}
         <Projects />
-        {/* know the skill you know  */}
+        {/*know the skill you know  */}
         <Skills />
       </main>
       {/* //include a form for contacting   */}
@@ -24,4 +23,11 @@ function HomePage() {
   );
 }
 
+function HomeContent(){
+  return (<>
+  <div>
+    home Content
+  </div>
+  </>)
+}
 export default HomePage;
