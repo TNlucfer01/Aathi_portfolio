@@ -1,3 +1,63 @@
-@import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
 
+@import "tailwindcss";
+
+.terminal-black {
+  background-color: #1E1E2E;
+}
+.terminal-white {
+  background-color: #E0E0E0;
+}
+.terminal-green {
+  background-color: #22C55E;
+}
+.terminal-blue {
+  background-color: #0EA5E9;
+}
+
+body{
+      font-family: 'JetBrains Mono';
+}
+
+.text-terminal-blue{
+    color: #00ff00;
+}
+.text-terminal-black{
+    color:#1E1E2E
+}
+.text-terminal-green{
+    color:#22C55E;
+}
+.text-terminal-white{
+    color:#E0E0E0
+}
+.typing::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+  margin-left: 0.2rem;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.nav-item {
+  @apply bg-gray-900 before:content-['>'] before:mr-1
+   before:text-green-400 
+   p-2 tracking-tight hover:text-green-400
+    hover:shadow-lg px-4 
+    rounded-xl font-mono 
+    font-light text-2xl 
+    transition-colors
+    duration-150;
+}
+.nav-bar {
+  @apply items-center  
+  p-4 
+  flex 
+  border-b-2 
+  border-green-400
+   shadow-md
+    justify-center
+     space-x-6 
+     bg-black;
+}
