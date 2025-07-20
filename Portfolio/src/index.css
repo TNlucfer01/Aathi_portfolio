@@ -31,24 +31,11 @@ body{
 .text-terminal-white{
     color:#E0E0E0
 }
-.typing::after {
-  content: '|';
-  animation: blink 1s step-end infinite;
-  margin-left: 0.2rem;
-}
-@keyframes blink {
-  50% { opacity: 0; }
-}
+
 
 .nav-item {
-  @apply bg-gray-900 before:content-['>'] before:mr-1
-   before:text-green-400 
-   p-2 tracking-tight hover:text-green-400
-    hover:shadow-lg px-4 
-    rounded-xl font-mono 
-    font-light text-2xl 
-    transition-colors
-    duration-150;
+  @apply bg-gray-900 before:content-['>'] before:mr-1 before:text-green-400 p-2 tracking-tight hover:text-green-400 hover:shadow-lg px-4 rounded-xl font-mono font-light text-2xl md:text-lg sm:text-base transition-colors duration-150
+;
 }
 .nav-bar {
   @apply items-center  
