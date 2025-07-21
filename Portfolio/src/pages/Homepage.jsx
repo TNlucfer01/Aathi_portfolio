@@ -14,7 +14,7 @@ function HomePage() {
       }
       id="home"
     >
-      <header className="sticky top-0">
+      <header className="sticky top-0 z-100">
         <Navbar />
       </header>
       <main className="text-[#e0e0e0]  ">

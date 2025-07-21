@@ -23,8 +23,8 @@ function Navbar() {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <div className="w-full p-8 ">
-      <nav className="flex items-center justify-between sm:p-4 p-2 top-0 sm:text-base border-b-2 border-green-400 shadow-md bg-black rounded-full ml-5 mr-5 overflow-hidden md:text-lg md:p-5">
+    <div className="w-full p-8 sticky top-3  z-100">
+      <nav className="flex items-center justify-between sm:p-4 p-2 top-0 ml-0 mr-0 sm:text-base border-b-2 border-green-400 shadow-md bg-black rounded-full lg:ml-5 lg:mr-5 overflow-hidden md:text-lg md:p-5">
         {/* Logo or Title (optional) */}
         <div className="text-white font-bold ml-2">Aathi Senthil</div>
                                                                                         
@@ -33,7 +33,7 @@ function Navbar() {
           onClick={toggleMenu}
           className="sm:hidden text-white text-2xl focus:outline-none mr-2"
         >
-          ☰
+        ☰
         </button>
 
         {/* Nav Items (Desktop) */}
