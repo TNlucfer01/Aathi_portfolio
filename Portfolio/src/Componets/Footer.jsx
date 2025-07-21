@@ -6,6 +6,8 @@ import {
   FaPhone,
   FaChessKnight,
   FaWhatsapp,
+  FaLinkedinIn,
+  
 } from "react-icons/fa";
 
 const Footer = () => {
@@ -26,7 +28,10 @@ const icons = [
     { icon: <FaChessKnight />, href: "https://www.chess.com/member/kiyopon00001", style: { backgroundColor: "#3a5f0b", color: "#fff", borderRadius: "50%", padding: "6px" } }, // chess.com green
     { icon: <FaEnvelope />, href: "mailto:aathi.programmer@gmail.com", style: { backgroundColor: "#ea4335", color: "#fff", borderRadius: "50%", padding: "6px" } },
     { icon: <FaWhatsapp />, href: "https://wa.me/919944711288", style: { backgroundColor: "#34a853", color: "#fff", borderRadius: "50%", padding: "6px" } },
-    { icon: <FaPhone />, href: "tel:+919944711288", style: { backgroundColor: "#34a853", color: "#fff", borderRadius: "50%", padding: "6px" } },
+    { icon: <FaPhone />, href: "tel:+919944711288", style: { backgroundColor: "#34a853", color: "#fff", borderRadius: "50%", padding: "6px" } 
+
+  },
+  {icon:<FaLinkedinIn/> ,href:"https://linkedin.com/in/aathisenthil",style: { backgroundColor: "#0088cc", color: "#fff", borderRadius: "50%", padding: "6px" } }
 ];
   return (
     <div id="footer" className="flex p-0.5 justify-center space-x-6">
