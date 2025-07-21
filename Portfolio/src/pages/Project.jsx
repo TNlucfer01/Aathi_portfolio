@@ -54,7 +54,7 @@ function Projects(){
   return (
 <div
   id="projects"
-  className="lg:pt-28 pt-2 ml-5 lg:px-32 md:px-24 lg:mt-20 md:mt-8 mt-10 rounded-2xl">      
+  className="lg:pt-28 pt-2 ml-1 lg:px-32 md:px-24 lg:mt-20 md:mt-8 mt-10 rounded-2xl">      
 <h2 className="lg:text-4xl md:text-3xl md:mt-8 text-2xl lg:mt-10 ">Projects devoloped by me </h2>
       {userprojects.map((item, idx) =>  {
         return (
