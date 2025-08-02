@@ -84,7 +84,7 @@ function Skill({skillName,skillLevel,skillExperience ,skillProject}) {
   
   ];  
   return (
-     <div id="skills" className="lg:mt-10 lg:p-9 md:p-8 m-2 mx-3 md:mt-9 mt-7 p-5 rounded-3xl items-center lg:mr-38 lg:ml-38 md:mr-35 md:ml-35 border-cyan-700  lg:border-4 md:border-3 border-2 " style={{ background: '#1E1E2E' }}>
+     <div id="skills" className="lg:mt-10 lg:p-9 md:p-8 m-2 duration-400 mx-3 md:mt-9 mt-7 p-5 rounded-3xl items-center lg:mr-38 lg:ml-38 md:mr-35 md:ml-35 border-cyan-700  lg:border-4 md:border-3 border-2 " style={{ background: '#1E1E2E' }}>
   <h2 className="text-3xl gap-2"><span className="text-3xl  before:content-['>']  before:mr-1  before:text-green-400  text-terminal-blue mb-6">ls -l</span> Skill</h2>
   <div className="grid mt-10 group grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">  {skills.map((skill, index) => (
         <Skill

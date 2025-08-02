@@ -51,7 +51,7 @@ function HomeContent() {
         smooth={true}
          duration={500}
       offset={-70}
-className="mt-5 h-13 gap-1 px-4 p-2 flex justify-center font-mono font-light text-xl bg-gray-900 rounded-xl tracking-tight before:content-['>'] before:mr-1 before:text-green-400 hover:text-green-400 hover:shadow-lg transition-colors duration-150 sm:text-base md:text-xl md:ml-38 md:mr-38 lg:text-4xl lg:ml-38 lg:mr-38">    Run <span className="text-terminal-blue">cd</span> projects
+className="mt-5 h-13 cursor-pointer gap-1 px-4 p-2 flex justify-center font-mono font-light text-xl bg-gray-900 rounded-xl tracking-tight before:content-['>'] before:mr-1 before:text-green-400 hover:text-green-400 hover:shadow-lg transition-colors duration-150 sm:text-base md:text-xl md:ml-38 md:mr-38 lg:text-4xl lg:ml-38 lg:mr-38">    Run <span className="text-terminal-blue">cd</span> projects
       </Link>
     </div>
   );
