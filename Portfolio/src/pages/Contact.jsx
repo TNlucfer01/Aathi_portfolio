@@ -48,15 +48,15 @@ function Contact() {
        <div className="mb-4 ">
             <label className="block text-terminal-blue p-2 text-3xl "> name:</label>
             <input  
-            type="text" name="name" className="w-full  bg-terminal-black focus:bg-gray-900 transition duration-200 focus:shadow-cyan-900 focus:border-cyan-900  focus:outline-none border-cyan-700 border-2 p-2 rounded text-terminal-white" onChange={handleChange} placeholder="Enter your name" />
+            type="text" name="name" className="w-full  bg-terminal-black focus:bg-gray-900 transition duration-200 focus:shadow-cyan-900 focus:border-cyan-900  focus:outline-none border-cyan-700 border-2 p-2 rounded text-terminal-white" onChange={handleChange} required placeholder="Enter your name" />
           </div>
           <div className="mb-4 ">
             <label className="block text-terminal-blue p-2 text-3xl "> email:</label>
-            <input name="email" type="email" className="w-full  bg-terminal-black focus:bg-gray-900 transition duration-200 focus:border-cyan-900  focus:outline-none border-cyan-700 border-2 p-2 rounded text-terminal-white" onChange={handleChange} placeholder="Enter your email" />
+            <input name="email" type="email" className="w-full  bg-terminal-black focus:bg-gray-900 transition duration-200 focus:border-cyan-900  focus:outline-none border-cyan-700 border-2 p-2 rounded text-terminal-white" onChange={handleChange} required placeholder="Enter your email" />
           </div>
           <div className="mb-4">
             <label className="block text-terminal-blue p-2 text-3xl "> message:</label>
-            <textarea className="w-full  h-20 bg-terminal-black focus:bg-gray-900 transition duration-200 focus:border-cyan-900  focus:outline-none  border-cyan-700 border-2 p-2 rounded text-terminal-white" onChange={handleChange} placeholder="Type your message"></textarea>
+            <textarea className="w-full  h-20 bg-terminal-black focus:bg-gray-900 transition duration-200 focus:border-cyan-900  focus:outline-none  border-cyan-700 border-2 p-2 rounded text-terminal-white" name="message" onChange={handleChange} required placeholder="Type your message"></textarea>
           </div> <button className="nav-item lg:ml-9 ">Contact Me</button>
 </form>
 </div>
