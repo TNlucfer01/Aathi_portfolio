@@ -21,7 +21,7 @@ function Project({ projectTittle, projectDescription, image, projectlink }) {
       </a>
     </div>
   );
-}
+} 
 
 function Projects(){
   const userprojects = [
