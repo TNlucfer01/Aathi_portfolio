@@ -2,9 +2,7 @@ import "./App.css";
 import HomePage from "./pages/Homepage";
 
 function App() {
-  return (
-<HomePage/>
-  );
+  return <HomePage />;
 }
 
 export default App;

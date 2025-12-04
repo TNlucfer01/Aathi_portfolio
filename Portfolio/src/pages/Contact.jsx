@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-  import React from 'react';
+import React from 'react';
 import emailjs from 'emailjs-com';
 
 function Contact() {
