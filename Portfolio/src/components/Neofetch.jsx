@@ -1,78 +1,65 @@
 import { profile, about } from "../data/system";
+import { projects, community } from "../data/projects";
+import repos from "../data/repos.json";
 
-// Arch-style ascii logo
-const LOGO = [
-  "                   ",
-  "         ▟█▙        ",
-  "        ▟███▙       ",
-  "       ▟█████▙      ",
-  "      ▟███████▙     ",
-  "     ▟█▛▀▀▀▜██▙     ",
-  "    ▟█▛    ▜███▙    ",
-  "   ▟██▇▇▇▇▇████▙    ",
-  "  ▟████████████▙▙   ",
-  " ▟███▛▘     ▝▜███▙  ",
-  "▟██▛▘         ▝▜██▙ ",
-];
+const TUX = ["    .--.    ", "   |o_o |   ", "   |:_/ |   ", "  //   \\ \\  ", " (|     | ) ", "/'\\_   _/`\\ ", "\\___)=(___/ "];
+
+// real: the most recent commit of mine across every repo, from repos.json
+const latest = Object.values(repos)
+  .flatMap((r) => r.log.map((l) => ({ ...l, repo: r.repo })))
+  .sort((a, b) => b.d.localeCompare(a.d))[0];
+
+// about[] is hard-wrapped for the terminal's `cat`; here it reflows to any width
+const paragraphs = about.join("\n").split("\n\n").map((p) => p.replace(/\n/g, " "));
 
 function Row({ k, v }) {
   return (
     <div className="flex gap-2">
-      <span className="c-mauve w-24 shrink-0">{k}</span>
-      <span className="c-sub">{v}</span>
+      <span className="c-mauve w-20 shrink-0">{k}</span>
+      <span className="c-text min-w-0 break-words">{v}</span>
     </div>
   );
 }
 
 export default function Neofetch() {
+  const nProj = projects.filter((p) => p.group === "projects").length;
+  const nLab = projects.filter((p) => p.group === "labs").length;
   return (
     <div className="p-4 sm:p-5 text-xs sm:text-sm leading-relaxed">
-      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-        <pre
-          className="c-blue text-[10px] sm:text-xs leading-none shrink-0 hidden sm:block"
-          aria-hidden="true"
-        >
-          {LOGO.join("\n")}
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
+        <pre className="c-blue text-[11px] sm:text-xs leading-[1.15] shrink-0 select-none" aria-hidden="true">
+          {TUX.join("\n")}
         </pre>
         <div className="min-w-0">
-          <p className="mb-1">
-            <span className="c-green">{profile.user}</span>
+          <p>
+            <span className="c-green font-bold">{profile.user}</span>
             <span className="c-sub">@</span>
-            <span className="c-green">{profile.host}</span>
+            <span className="c-green font-bold">{profile.host}</span>
           </p>
-          <p className="c-sub mb-2">{"-".repeat(20)}</p>
+          <p className="c-dim mb-1.5">{"─".repeat(17)}</p>
           <Row k="name" v={profile.name} />
           <Row k="role" v={profile.title} />
-          <Row k="os" v={profile.distro} />
           <Row k="wm" v={profile.wm} />
-          <Row k="shell" v={profile.shell} />
           <Row k="editor" v={profile.editor} />
-          <Row k="terminal" v={profile.terminal} />
-          <Row k="location" v={profile.location} />
-          <Row k="status" v={profile.uptime} />
-          <div className="flex gap-1 mt-3">
-            {["--base", "--red", "--peach", "--yellow", "--green", "--teal", "--blue", "--mauve"].map(
-              (c) => (
-                <span
-                  key={c}
-                  className="w-4 h-4 rounded-sm"
-                  style={{ background: `var(${c})` }}
-                />
-              )
-            )}
+          <Row k="from" v={profile.location} />
+          <Row k="status" v={profile.status} />
+          <Row k="repos" v={`${nProj} projects · ${nLab} labs · ${community.length} forks & collabs`} />
+          <Row k="latest" v={`${latest.d} · ${latest.repo}`} />
+          <div className="flex gap-1 mt-3" aria-hidden="true">
+            {["red", "peach", "yellow", "green", "teal", "blue", "mauve", "pink"].map((c) => (
+              <span key={c} className="w-4 h-4 rounded-sm" style={{ background: `var(--${c})` }} />
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="mt-5 pt-4" style={{ borderTop: "1px solid var(--surface0)" }}>
-        <p className="c-green mb-2">
-          <span className="c-mauve">$</span> cat about.txt
+      <div className="mt-5 pt-4" style={{ borderTop: "1px solid color-mix(in srgb, var(--surface1) 60%, transparent)" }}>
+        <p className="mb-2">
+          <span className="c-mauve">$</span> <span className="c-green">cat</span> about.txt
         </p>
-        {about.map((line, i) => (
-          <p key={i} className="c-text min-h-[1.1em]">
-            {line}
-          </p>
-        ))}
+        <div className="c-text space-y-3">
+          {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+        </div>
       </div>
     </div>
   );

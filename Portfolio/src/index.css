@@ -2,150 +2,132 @@
 
 @import "tailwindcss";
 
-/* ── Catppuccin Mocha palette (the Hyprland ricing default) ───────── */
+/* Theme colours are set on :root by theme.js (Catppuccin Mocha is the default here). */
 :root {
-  --base: #1e1e2e;
-  --mantle: #181825;
-  --crust: #11111b;
-  --surface0: #313244;
-  --surface1: #45475a;
-  --surface2: #585b70;
-  --overlay0: #6c7086;
-  --text: #cdd6f4;
-  --subtext: #a6adc8;
-  --blue: #89b4fa;
-  --lavender: #b4befe;
-  --sapphire: #74c7ec;
-  --sky: #89dceb;
-  --teal: #94e2d5;
-  --green: #a6e3a1;
-  --yellow: #f9e2af;
-  --peach: #fab387;
-  --maroon: #eba0ac;
-  --red: #f38ba8;
-  --mauve: #cba6f7;
-  --pink: #f5c2e7;
-
-  --accent: var(--mauve);
-  --glow: 0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent),
-    0 0 18px -2px color-mix(in srgb, var(--accent) 55%, transparent);
+  --base: #1e1e2e; --mantle: #181825; --crust: #11111b;
+  --surface0: #313244; --surface1: #45475a; --surface2: #585b70; --overlay0: #6c7086;
+  --text: #cdd6f4; --subtext: #a6adc8;
+  --blue: #89b4fa; --lavender: #b4befe; --sapphire: #74c7ec; --sky: #89dceb; --teal: #94e2d5;
+  --green: #a6e3a1; --yellow: #f9e2af; --peach: #fab387; --red: #f38ba8; --mauve: #cba6f7; --pink: #f5c2e7;
+  --accent: #cba6f7;
+  --win-alpha: 58%; /* window transparency, changed by `opacity` */
+  --gap: 10px;
+  --radius: 14px;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
+@layer base {
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  font-family: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+  font-family: "JetBrains Mono", ui-monospace, "Cascadia Code", "DejaVu Sans Mono", monospace;
   color: var(--text);
   background: var(--crust);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
 }
+}
 
-/* Animated gradient "wallpaper" behind the tiling windows */
+@layer components {
+/* ── wallpaper: drifting colour blobs; the glass windows blur whatever is behind ── */
 .wallpaper {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(1200px 700px at 12% 8%, color-mix(in srgb, var(--mauve) 22%, transparent), transparent 60%),
-    radial-gradient(1100px 800px at 92% 95%, color-mix(in srgb, var(--blue) 20%, transparent), transparent 55%),
-    radial-gradient(900px 600px at 80% 10%, color-mix(in srgb, var(--teal) 12%, transparent), transparent 55%),
-    linear-gradient(135deg, var(--crust), var(--mantle) 60%, var(--base));
-  background-size: 200% 200%;
-  animation: driftbg 24s ease-in-out infinite alternate;
+  position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  background: linear-gradient(160deg, var(--crust), var(--mantle) 55%, var(--base));
+  transition: background 0.5s;
 }
+.blob { position: absolute; border-radius: 50%; will-change: transform; background: radial-gradient(closest-side, var(--c), transparent); }
+.b1 { --c: var(--mauve); width: 72vmax; height: 72vmax; left: -24vmax; top: -28vmax; opacity: 0.5;  animation: f1 28s ease-in-out infinite alternate; }
+.b2 { --c: var(--blue);  width: 68vmax; height: 68vmax; right: -24vmax; bottom: -30vmax; opacity: 0.46; animation: f2 34s ease-in-out infinite alternate; }
+.b3 { --c: var(--teal);  width: 50vmax; height: 50vmax; left: 34%; top: 26%; opacity: 0.26; animation: f3 40s ease-in-out infinite alternate; }
+.b4 { --c: var(--pink);  width: 40vmax; height: 40vmax; right: 6%; top: -14vmax; opacity: 0.24; animation: f2 46s ease-in-out infinite alternate-reverse; }
 .wallpaper::after {
-  /* subtle dotted grid, like a tiled desktop */
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(color-mix(in srgb, var(--overlay0) 28%, transparent) 1px, transparent 1px);
-  background-size: 26px 26px;
-  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 85%);
-  opacity: 0.35;
-}
-@keyframes driftbg {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 100% 100%; }
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--text) 16%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 80%);
+  opacity: 0.4;
 }
 
-/* Tiling window chrome */
-.winborder {
-  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  box-shadow:
-    var(--glow),
-    0 10px 40px -12px rgba(0, 0, 0, 0.65);
-}
-.winborder-dim {
-  border: 1px solid var(--surface1);
-  box-shadow: 0 8px 30px -14px rgba(0, 0, 0, 0.6);
-}
 
+
+
+/* ── glass: translucent + blurred, so the wallpaper shows through ── */
 .glass {
-  background: color-mix(in srgb, var(--base) 82%, transparent);
-  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--base) var(--win-alpha), transparent);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+.glass-head {
+  background: color-mix(in srgb, var(--mantle) var(--win-alpha), transparent);
+}
+.glass-inset {
+  background: color-mix(in srgb, var(--mantle) calc(var(--win-alpha) + 10%), transparent);
 }
 
-/* Scrollbars, catppuccin style */
-::-webkit-scrollbar {
-  width: 9px;
-  height: 9px;
+/* ── Window borders. Active = Hyprland-style rotating gradient border. ── */
+
+.win {
+  position: relative;
+  border-radius: var(--radius);
+  box-shadow: 0 14px 44px -16px rgba(0, 0, 0, 0.7);
+  border: 1px solid color-mix(in srgb, var(--surface1) 70%, transparent);
+  transition: border-color 0.25s, box-shadow 0.25s;
 }
-::-webkit-scrollbar-track {
-  background: transparent;
+.win-active {
+  border-color: transparent;
+  box-shadow: 0 14px 50px -14px color-mix(in srgb, var(--accent) 45%, transparent), 0 0 24px -6px color-mix(in srgb, var(--accent) 38%, transparent);
 }
-::-webkit-scrollbar-thumb {
-  background: var(--surface1);
-  border-radius: 99px;
+.ring {
+  position: absolute; inset: -1px; padding: 2px; border-radius: inherit; overflow: hidden; pointer-events: none; z-index: 5;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--surface2);
+.ring-spin {
+  position: absolute; left: 50%; top: 50%; width: calc(100% + 60vmax); aspect-ratio: 1; translate: -50% -50%; will-change: rotate;
+  background: conic-gradient(var(--mauve), var(--blue), var(--teal), var(--green), var(--yellow), var(--pink), var(--mauve));
+  animation: ring-rot 8s linear infinite;
+}}
+
+@keyframes f1 { to { transform: translate3d(14vmax, 10vmax, 0) scale(1.15); } }
+@keyframes f2 { to { transform: translate3d(-12vmax, -8vmax, 0) scale(1.1); } }
+@keyframes f3 { to { transform: translate3d(-10vmax, 12vmax, 0) scale(0.9); } }
+@keyframes ring-rot { to { rotate: 360deg; } }
+
+@layer base {
+/* Scrollbars */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--surface1); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--surface2); }
+
 }
 
-/* Blinking terminal cursor */
-.cursor-blink::after {
-  content: "▋";
-  margin-left: 2px;
-  color: var(--accent);
-  animation: blink 1s steps(1) infinite;
-}
-@keyframes blink {
-  50% { opacity: 0; }
+@layer utilities {
+/* colour helpers used from JS */
+.c-green { color: var(--green); } .c-blue { color: var(--blue); } .c-mauve { color: var(--mauve); }
+.c-peach { color: var(--peach); } .c-yellow { color: var(--yellow); } .c-red { color: var(--red); }
+.c-teal { color: var(--teal); } .c-sky { color: var(--sky); } .c-pink { color: var(--pink); }
+.c-sub { color: var(--subtext); } .c-text { color: var(--text); } .c-dim { color: var(--overlay0); }
+.c-accent { color: var(--accent); }
+
 }
 
-/* colour helpers used in JSX */
-.c-green { color: var(--green); }
-.c-blue { color: var(--blue); }
-.c-mauve { color: var(--mauve); }
-.c-peach { color: var(--peach); }
-.c-yellow { color: var(--yellow); }
-.c-red { color: var(--red); }
-.c-teal { color: var(--teal); }
-.c-sub { color: var(--subtext); }
-.c-text { color: var(--text); }
-
+@layer base {
 kbd {
-  font-family: inherit;
-  background: var(--surface0);
-  border: 1px solid var(--surface2);
-  border-bottom-width: 2px;
-  border-radius: 6px;
-  padding: 1px 7px;
-  font-size: 0.78em;
-  color: var(--text);
+  font-family: inherit; background: var(--surface0); border: 1px solid var(--surface2); border-bottom-width: 2px;
+  border-radius: 6px; padding: 1px 7px; font-size: 0.78em; color: var(--text);
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
 }
 
-a { color: inherit; text-decoration: none; }
+@layer utilities {
+.term-pre { white-space: pre-wrap; word-break: break-word; }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
   html { scroll-behavior: auto; }
-  .wallpaper { animation: none; }
 }

@@ -1,49 +1,81 @@
-// About, skills and "system" info for the neofetch + terminal windows.
+// About, skills and contact data. Everything here is either stated by Aathi or
+// derivable from his repos — skills link back to the projects that show them.
 
 export const profile = {
   user: "aathi",
-  host: "archlinux",
+  host: "portfolio", // the shell below is a simulated session, not a real machine
   name: "Aathi Senthil",
   title: "Linux & Full-Stack Developer",
-  location: "Tamil Nadu, India",
-  shell: "zsh",
   wm: "Hyprland",
   editor: "Neovim",
-  terminal: "kitty",
-  distro: "Arch Linux",
-  uptime: "final-year engineering student",
+  location: "India",
+  status: "final-year engineering student",
+  github: "TNlucfer01",
   email: "aathi.programmer@gmail.com",
 };
 
 export const about = [
-  "Final-year engineering student and Linux power user who builds full-stack",
-  "web apps, AI/LLM tooling and systems software in C.",
+  "I'm a final-year engineering student and a Linux-first developer — my daily",
+  "setup is Hyprland and Neovim. I build full-stack web apps, AI/LLM tools and",
+  "systems software in C.",
   "",
-  "I live in the terminal — Arch, Hyprland, Neovim, zsh — and I like turning",
-  "messy real-world problems (campus attendance, document assistants, plant",
-  "disease diagnosis) into things people actually use. Comfortable across the",
-  "stack: React & Django on the web, FastAPI and Spring Boot on the backend,",
-  "PyTorch and RAG pipelines for ML, and C/SDL2 when I want to get close to",
-  "the metal.",
+  "The projects here run from a campus AI assistant with retrieval and SQL",
+  "tools, to a college attendance platform, to a LAN file-sharing app packaged",
+  "as an AppImage. I like problems with real users: attendance, document",
+  "search, plant disease, file transfer.",
+  "",
+  "Poke around: this desktop is a toy Linux session. Try `ls`, `cd projects`,",
+  "`tree`, `theme nord`, or `hyprctl workspaces`.",
 ];
 
+// cat: grouping. repos: project ids from projects.js that demonstrate the skill.
 export const skills = [
-  { name: "Linux / Arch / Hyprland", level: 90, cat: "systems" },
-  { name: "C", level: 80, cat: "systems" },
-  { name: "Bash / Shell", level: 70, cat: "systems" },
-  { name: "Neovim (Lua)", level: 75, cat: "systems" },
-  { name: "Python", level: 88, cat: "lang" },
-  { name: "JavaScript", level: 80, cat: "lang" },
-  { name: "Java", level: 70, cat: "lang" },
-  { name: "React", level: 82, cat: "web" },
-  { name: "Django", level: 80, cat: "web" },
-  { name: "Node / Express", level: 75, cat: "web" },
-  { name: "Spring Boot", level: 65, cat: "web" },
-  { name: "Tailwind CSS", level: 85, cat: "web" },
-  { name: "PyTorch / ML", level: 72, cat: "ai" },
-  { name: "RAG / LLM tooling", level: 80, cat: "ai" },
-  { name: "MySQL / SQLite", level: 78, cat: "data" },
-  { name: "Git", level: 85, cat: "tools" },
+  { name: "Linux / Hyprland", cat: "systems", repos: [], note: "my daily-driver environment" },
+  { name: "C", cat: "systems", repos: ["tictactoe", "oslab", "learning"] },
+  { name: "Bash / shell", cat: "systems", repos: ["oslab"] },
+  { name: "Neovim (Lua)", cat: "systems", repos: ["nvim"] },
+  { name: "SDL2 / Wayland", cat: "systems", repos: ["tictactoe"] },
+  { name: "AppImage / .deb packaging", cat: "systems", repos: ["htshare", "tictactoe"] },
+
+  { name: "Python", cat: "languages", repos: ["vir", "plant", "rag", "fakenews", "neetcode"] },
+  { name: "JavaScript / TypeScript", cat: "languages", repos: ["donbosco", "smartcampus", "vir"] },
+  { name: "Java", cat: "languages", repos: ["htshare", "attendanceweb"] },
+  { name: "Kotlin", cat: "languages", repos: ["plant"] },
+  { name: "Lua", cat: "languages", repos: ["nvim"] },
+
+  { name: "React", cat: "web", repos: ["donbosco", "smartcampus", "intern"] },
+  { name: "Django", cat: "web", repos: ["tes"] },
+  { name: "Node / Express", cat: "web", repos: ["donbosco", "intern"] },
+  { name: "Spring Boot", cat: "web", repos: ["attendanceweb"] },
+  { name: "Tailwind CSS", cat: "web", repos: ["tes", "donbosco", "smartcampus"] },
+  { name: "FastAPI", cat: "web", repos: ["vir"] },
+  { name: "JWT auth", cat: "web", repos: ["donbosco", "attendanceweb"] },
+
+  { name: "RAG / vector search", cat: "ai", repos: ["vir", "rag"] },
+  { name: "LLM tool-calling", cat: "ai", repos: ["vir"] },
+  { name: "Local LLMs (Ollama)", cat: "ai", repos: ["plant", "rag"] },
+  { name: "PyTorch / CNNs", cat: "ai", repos: ["plant"] },
+  { name: "scikit-learn / NLP", cat: "ai", repos: ["fakenews"] },
+  { name: "LangChain / LangGraph", cat: "ai", repos: ["agentic"] },
+
+  { name: "MySQL / MariaDB", cat: "data", repos: ["donbosco", "attendanceweb"] },
+  { name: "SQLite", cat: "data", repos: ["vir", "tes"] },
+  { name: "Qdrant", cat: "data", repos: ["vir"] },
+  { name: "Redis", cat: "data", repos: ["tes"] },
+
+  { name: "Git / GitHub", cat: "tools", repos: ["vir", "donbosco", "tes"] },
+  { name: "Maven", cat: "tools", repos: ["htshare", "attendanceweb"] },
+  { name: "Robot Framework", cat: "tools", repos: ["tes"] },
+  { name: "Swagger / OpenAPI", cat: "tools", repos: ["donbosco"] },
+];
+
+export const CATS = [
+  { cat: "systems", label: "systems & linux", color: "green" },
+  { cat: "languages", label: "languages", color: "peach" },
+  { cat: "web", label: "web", color: "blue" },
+  { cat: "ai", label: "ai / ml", color: "mauve" },
+  { cat: "data", label: "data", color: "teal" },
+  { cat: "tools", label: "tools", color: "yellow" },
 ];
 
 export const socials = [

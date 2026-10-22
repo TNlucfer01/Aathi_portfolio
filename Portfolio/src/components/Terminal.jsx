@@ -1,167 +1,101 @@
 import { useEffect, useRef, useState } from "react";
 import { profile } from "../data/system";
-import { projects } from "../data/projects";
+import { prettyPath } from "../vm/fs";
 
-const PROMPT = (
-  <>
-    <span className="c-green">{profile.user}@{profile.host}</span>
-    <span className="c-sub"> ~ </span>
-    <span className="c-mauve"> </span>
-  </>
-);
+function Prompt({ cwd }) {
+  return (
+    <>
+      <span className="c-green font-bold">{profile.user}@{profile.host}</span>
+      <span className="c-dim">:</span>
+      <span className="c-blue">{prettyPath(cwd)}</span>
+      <span className="c-sub">$ </span>
+    </>
+  );
+}
 
-const HELP = [
-  "available commands:",
-  "  help            show this message",
-  "  about           who is aathi",
-  "  projects        list featured projects",
-  "  skills          what i work with",
-  "  neofetch        system info",
-  "  social          links to find me",
-  "  goto <ws>       jump to a workspace (projects|skills|contact)",
-  "  clear           clear the screen",
-  "  sudo rm -rf /   don't.",
-];
+const canHover = () => typeof window !== "undefined" && window.matchMedia?.("(hover: hover) and (min-width: 768px)").matches;
 
-export default function Terminal({ onGoto, big = false }) {
-  const [lines, setLines] = useState([
-    { t: "out", c: "c-sub", v: `Welcome to aathi-os ${profile.wm} session. Type 'help' to begin.` },
-  ]);
-  const [input, setInput] = useState("");
-  const [history, setHistory] = useState([]);
-  const [hi, setHi] = useState(-1);
-  const endRef = useRef(null);
-  const inRef = useRef(null);
+/** Renders the shared simulated shell session (see vm/useShell.js). */
+export default function Terminal({ session, focused = true, autoFocus = false }) {
+  const [value, setValue] = useState("");
+  const [hIdx, setHIdx] = useState(-1);
+  const draft = useRef("");
+  const box = useRef(null);
+  const input = useRef(null);
 
+  // keep the newest output in view (scroll our own box, never the page)
   useEffect(() => {
-    endRef.current?.scrollIntoView({ block: "end" });
-  }, [lines]);
+    if (box.current) box.current.scrollTop = box.current.scrollHeight;
+  }, [session.lines]);
 
-  const push = (arr) => setLines((p) => [...p, ...arr]);
+  // focus follows the focused window — on desktop only, so phones don't pop a keyboard
+  useEffect(() => {
+    if ((autoFocus || focused) && canHover()) input.current?.focus({ preventScroll: true });
+  }, [focused, autoFocus]);
 
-  const run = (raw) => {
-    const cmd = raw.trim();
-    const echo = { t: "in", v: cmd };
-    if (!cmd) return setLines((p) => [...p, echo]);
-    setHistory((h) => [cmd, ...h]);
-    const [name, ...args] = cmd.split(/\s+/);
-    let out = [];
-    switch (name.toLowerCase()) {
-      case "help":
-        out = HELP.map((v) => ({ t: "out", c: "c-sub", v }));
-        break;
-      case "about":
-        out = [
-          { t: "out", c: "c-text", v: `${profile.name} — ${profile.title}, ${profile.location}.` },
-          { t: "out", c: "c-sub", v: "Linux-first developer: Arch, Hyprland, Neovim. Builds full-stack web, AI/LLM tools and C systems software." },
-        ];
-        break;
-      case "projects":
-        out = projects
-          .filter((p) => p.featured)
-          .map((p) => ({ t: "out", c: "c-text", v: `  ${p.file.padEnd(22)} ${p.name}` }));
-        out.unshift({ t: "out", c: "c-green", v: "featured projects (see workspace 2 for all):" });
-        break;
-      case "skills":
-        out = [
-          { t: "out", c: "c-green", v: "systems: Linux · C · Bash · Neovim" },
-          { t: "out", c: "c-blue", v: "web:     React · Django · Node · Spring Boot · Tailwind" },
-          { t: "out", c: "c-mauve", v: "ai:      PyTorch · RAG · LLM tooling · Ollama" },
-        ];
-        break;
-      case "neofetch":
-        out = [{ t: "out", c: "c-blue", v: `${profile.user}@${profile.host} · ${profile.distro} · ${profile.wm} · ${profile.editor}` }];
-        break;
-      case "social":
-        out = [
-          { t: "out", c: "c-text", v: "github:   github.com/TNlucfer01" },
-          { t: "out", c: "c-text", v: "linkedin: linkedin.com/in/aathisenthil" },
-          { t: "out", c: "c-text", v: `email:    ${profile.email}` },
-        ];
-        break;
-      case "goto": {
-        const map = { projects: 1, skills: 2, contact: 3 };
-        const w = map[(args[0] || "").toLowerCase()];
-        if (w != null) {
-          out = [{ t: "out", c: "c-green", v: `switching to ${args[0]}...` }];
-          onGoto?.(w);
-        } else {
-          out = [{ t: "out", c: "c-red", v: "usage: goto projects|skills|contact" }];
-        }
-        break;
-      }
-      case "clear":
-        setLines([]);
-        return;
-      case "sudo":
-        out = [{ t: "out", c: "c-red", v: "nice try. this incident will be reported. 🙂" }];
-        break;
-      case "ls":
-        out = [{ t: "out", c: "c-blue", v: "about.txt  projects/  skills/  contact/  resume.pdf" }];
-        break;
-      case "whoami":
-        out = [{ t: "out", c: "c-text", v: profile.user }];
-        break;
-      default:
-        out = [{ t: "out", c: "c-red", v: `command not found: ${name} — try 'help'` }];
-    }
-    push([echo, ...out]);
-  };
-
-  const onKey = (e) => {
+  const onKeyDown = (e) => {
+    const hist = session.history();
     if (e.key === "Enter") {
-      run(input);
-      setInput("");
-      setHi(-1);
+      session.run(value);
+      setValue(""); setHIdx(-1);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setHi((i) => {
-        const n = Math.min(i + 1, history.length - 1);
-        if (history[n] != null) setInput(history[n]);
-        return n;
-      });
+      if (!hist.length) return;
+      if (hIdx === -1) draft.current = value;
+      const n = Math.min(hIdx + 1, hist.length - 1);
+      setHIdx(n); setValue(hist[hist.length - 1 - n]);
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      setHi((i) => {
-        const n = Math.max(i - 1, -1);
-        setInput(n === -1 ? "" : history[n] || "");
-        return n;
-      });
+      if (hIdx === -1) return;
+      const n = hIdx - 1;
+      setHIdx(n); setValue(n === -1 ? draft.current : hist[hist.length - 1 - n]);
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      const r = session.complete(value);
+      if (r.line !== value) setValue(r.line);
+      else if (r.options.length) session.showOptions(value, r.options);
+    } else if (e.ctrlKey && e.key.toLowerCase() === "l") {
+      e.preventDefault(); session.clear();
+    } else if (e.ctrlKey && e.key.toLowerCase() === "c") {
+      e.preventDefault(); setValue(""); setHIdx(-1);
     }
   };
 
   return (
     <div
-      className={`p-3 sm:p-4 text-xs sm:text-sm font-mono ${big ? "min-h-full" : ""}`}
-      onClick={() => inRef.current?.focus()}
+      ref={box}
+      data-terminal
+      className="h-full overflow-auto p-3 sm:p-4 text-xs sm:text-sm"
+      onClick={() => { if (!window.getSelection()?.toString()) input.current?.focus({ preventScroll: true }); }}
     >
-      {lines.map((l, i) =>
-        l.t === "in" ? (
-          <p key={i} className="whitespace-pre-wrap break-words">
-            {PROMPT}
-            <span className="c-text">{l.v}</span>
-          </p>
+      {session.lines.map((ln, i) =>
+        ln.k === "in" ? (
+          <div key={i} className="term-pre">
+            <Prompt cwd={ln.cwd} />
+            <span className="c-text">{ln.text}</span>
+          </div>
         ) : (
-          <p key={i} className={`whitespace-pre-wrap break-words ${l.c || "c-sub"}`}>
-            {l.v}
-          </p>
+          <div key={i} className="term-pre">
+            {ln.l.map(([t, c], j) => (c ? <span key={j} className={c}>{t}</span> : t))}
+          </div>
         )
       )}
-      <div className="flex items-center flex-wrap">
-        {PROMPT}
+      <label className="flex items-baseline">
+        <span className="shrink-0 whitespace-pre"><Prompt cwd={session.cwd} /></span>
         <input
-          ref={inRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={onKey}
+          ref={input}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={onKeyDown}
           spellCheck={false}
           autoComplete="off"
-          aria-label="terminal input"
-          className="flex-1 min-w-[6ch] bg-transparent outline-none c-text caret-transparent"
+          autoCapitalize="off"
+          autoCorrect="off"
+          aria-label="Terminal input. Type help for commands."
+          className="flex-1 min-w-0 bg-transparent outline-none c-text"
+          style={{ caretColor: "var(--accent)", font: "inherit", outline: "none" }}
         />
-        <span className="cursor-blink" aria-hidden="true" />
-      </div>
-      <div ref={endRef} />
+      </label>
     </div>
   );
 }

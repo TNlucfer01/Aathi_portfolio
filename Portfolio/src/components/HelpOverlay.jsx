@@ -1,12 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 
 const BINDS = [
-  { k: ["Super", "1–5"], d: "switch workspace" },
-  { k: ["Super", "→ / ←"], d: "next / previous workspace" },
-  { k: ["Super", "T"], d: "jump to terminal" },
-  { k: ["Super", "/"], d: "toggle this help" },
+  { k: ["Alt", "1–5"], d: "switch workspace" },
+  { k: ["Alt", "→ / ←"], d: "next / previous workspace" },
+  { k: ["Alt", "T"], d: "jump to the terminal" },
+  { k: ["Alt", "/"], d: "toggle this help" },
   { k: ["Esc"], d: "close help" },
-  { k: ["type in terminal"], d: "help · projects · skills · social · goto" },
+  { k: ["Tab"], d: "complete commands and paths in the terminal" },
+  { k: ["↑", "↓"], d: "command history" },
+  { k: ["Ctrl", "L"], d: "clear the terminal" },
 ];
 
 export default function HelpOverlay({ open, onClose }) {
@@ -19,18 +21,20 @@ export default function HelpOverlay({ open, onClose }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
           onClick={onClose}
         >
           <motion.div
-            className="glass winborder rounded-xl max-w-md w-full p-6"
+            className="glass win win-active max-w-md w-full p-6"
             initial={{ scale: 0.9, y: 10 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="c-text text-lg">
-                <span className="c-mauve"></span> keybinds
+                keybinds
               </h2>
               <button onClick={onClose} className="c-sub hover:text-[var(--red)]" aria-label="close">
                 ✕
@@ -49,8 +53,7 @@ export default function HelpOverlay({ open, onClose }) {
               ))}
             </ul>
             <p className="c-sub text-xs mt-5">
-              On a laptop, <kbd>Super</kbd> is the Windows / ⌘ key. On touch, tap the workspace
-              numbers in the top bar.
+              Hover a window to focus it, like a tiling WM. On touch, tap the workspace icons in the top bar. Try <kbd>theme nord</kbd> or <kbd>opacity 30</kbd> in the terminal.
             </p>
           </motion.div>
         </motion.div>
