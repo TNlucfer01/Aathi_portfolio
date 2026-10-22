@@ -1,50 +1,151 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap");
 
 @import "tailwindcss";
 
-.terminal-black {
-  background-color: #1E1E2E;
-}
-.terminal-white {
-  background-color: #E0E0E0;
-}
-.terminal-green {
-  background-color: #22C55E;
-}
-.terminal-blue {
-  background-color: #0EA5E9;
+/* ── Catppuccin Mocha palette (the Hyprland ricing default) ───────── */
+:root {
+  --base: #1e1e2e;
+  --mantle: #181825;
+  --crust: #11111b;
+  --surface0: #313244;
+  --surface1: #45475a;
+  --surface2: #585b70;
+  --overlay0: #6c7086;
+  --text: #cdd6f4;
+  --subtext: #a6adc8;
+  --blue: #89b4fa;
+  --lavender: #b4befe;
+  --sapphire: #74c7ec;
+  --sky: #89dceb;
+  --teal: #94e2d5;
+  --green: #a6e3a1;
+  --yellow: #f9e2af;
+  --peach: #fab387;
+  --maroon: #eba0ac;
+  --red: #f38ba8;
+  --mauve: #cba6f7;
+  --pink: #f5c2e7;
+
+  --accent: var(--mauve);
+  --glow: 0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent),
+    0 0 18px -2px color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
-body{
-      font-family: 'JetBrains Mono';
+* {
+  box-sizing: border-box;
 }
 
-.text-terminal-blue{
-    color: #00ff00;
-}
-.text-terminal-black{
-    color:#1E1E2E
-}
-.text-terminal-green{
-    color:#22C55E;
-}
-.text-terminal-white{
-    color:#E0E0E0
+html {
+  scroll-behavior: smooth;
 }
 
-
-.nav-item {
-  @apply bg-gray-900 before:content-['>'] before:mr-1 before:text-green-400 p-2 tracking-tight hover:text-green-400 hover:shadow-lg px-4 rounded-xl font-mono font-light text-2xl md:text-lg sm:text-base transition-colors duration-150
-;
+body {
+  margin: 0;
+  font-family: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+  color: var(--text);
+  background: var(--crust);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
 }
-.nav-bar {
-  @apply items-center  
-  p-4 
-  flex 
-  border-b-2 
-  border-green-400
-   shadow-md
-    justify-center
-     space-x-6 
-     bg-black;
+
+/* Animated gradient "wallpaper" behind the tiling windows */
+.wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(1200px 700px at 12% 8%, color-mix(in srgb, var(--mauve) 22%, transparent), transparent 60%),
+    radial-gradient(1100px 800px at 92% 95%, color-mix(in srgb, var(--blue) 20%, transparent), transparent 55%),
+    radial-gradient(900px 600px at 80% 10%, color-mix(in srgb, var(--teal) 12%, transparent), transparent 55%),
+    linear-gradient(135deg, var(--crust), var(--mantle) 60%, var(--base));
+  background-size: 200% 200%;
+  animation: driftbg 24s ease-in-out infinite alternate;
+}
+.wallpaper::after {
+  /* subtle dotted grid, like a tiled desktop */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--overlay0) 28%, transparent) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse at center, #000 30%, transparent 85%);
+  opacity: 0.35;
+}
+@keyframes driftbg {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+/* Tiling window chrome */
+.winborder {
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow:
+    var(--glow),
+    0 10px 40px -12px rgba(0, 0, 0, 0.65);
+}
+.winborder-dim {
+  border: 1px solid var(--surface1);
+  box-shadow: 0 8px 30px -14px rgba(0, 0, 0, 0.6);
+}
+
+.glass {
+  background: color-mix(in srgb, var(--base) 82%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+/* Scrollbars, catppuccin style */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface1);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--surface2);
+}
+
+/* Blinking terminal cursor */
+.cursor-blink::after {
+  content: "▋";
+  margin-left: 2px;
+  color: var(--accent);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* colour helpers used in JSX */
+.c-green { color: var(--green); }
+.c-blue { color: var(--blue); }
+.c-mauve { color: var(--mauve); }
+.c-peach { color: var(--peach); }
+.c-yellow { color: var(--yellow); }
+.c-red { color: var(--red); }
+.c-teal { color: var(--teal); }
+.c-sub { color: var(--subtext); }
+.c-text { color: var(--text); }
+
+kbd {
+  font-family: inherit;
+  background: var(--surface0);
+  border: 1px solid var(--surface2);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 1px 7px;
+  font-size: 0.78em;
+  color: var(--text);
+}
+
+a { color: inherit; text-decoration: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
+  html { scroll-behavior: auto; }
+  .wallpaper { animation: none; }
 }
