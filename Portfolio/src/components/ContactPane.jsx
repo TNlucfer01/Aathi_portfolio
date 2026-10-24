@@ -1,5 +1,6 @@
 import { useState } from "react";
 import emailjs from "emailjs-com";
+import { Send } from "lucide-react";
 import { socials, profile } from "../data/system";
 
 const SERVICE = "service_9rpl40b";
@@ -24,8 +25,8 @@ export default function ContactPane() {
   const field =
     "w-full rounded-lg px-3 py-2 text-sm outline-none transition-all duration-150";
   const fieldStyle = {
-    background: "var(--crust)",
-    border: "1px solid var(--surface1)",
+    background: "color-mix(in srgb, var(--crust) 70%, transparent)",
+    border: "1px solid color-mix(in srgb, var(--surface1) 80%, transparent)",
     color: "var(--text)",
   };
 
@@ -88,11 +89,11 @@ export default function ContactPane() {
           type="submit"
           disabled={status === "sending"}
           className="px-4 py-2 rounded-lg text-sm transition-all duration-150 disabled:opacity-60"
-          style={{ background: "var(--surface0)", color: "var(--accent)" }}
+          style={{ background: "color-mix(in srgb, var(--surface0) 90%, transparent)", color: "var(--accent)" }}
           onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "var(--glow)")}
           onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
         >
-          <span className="c-mauve"></span>{" "}
+          <Send size={14} className="inline -mt-0.5 mr-1.5" aria-hidden="true" />
           {status === "sending" ? "sending…" : "send message"}
         </button>
         <p className="mt-3 text-sm min-h-[1.2em]" aria-live="polite">
@@ -105,8 +106,8 @@ export default function ContactPane() {
 
       {/* socials */}
       <div
-        className="p-4 sm:p-6 overflow-auto md:border-l"
-        style={{ borderColor: "var(--surface0)", background: "var(--mantle)" }}
+        className="p-4 sm:p-6 overflow-auto md:border-l glass-inset"
+        style={{ borderColor: "color-mix(in srgb, var(--surface1) 55%, transparent)" }}
       >
         <p className="c-sub text-sm mb-4">
           <span className="c-mauve">$</span> cat ~/.config/links
@@ -119,7 +120,7 @@ export default function ContactPane() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-all duration-150"
-              style={{ background: "var(--crust)", border: "1px solid var(--surface1)" }}
+              style={{ background: "color-mix(in srgb, var(--crust) 70%, transparent)", border: "1px solid color-mix(in srgb, var(--surface1) 80%, transparent)" }}
               onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "var(--glow)")}
               onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
             >
